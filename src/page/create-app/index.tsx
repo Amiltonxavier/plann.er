@@ -1,18 +1,13 @@
 import {
   ArrowRight,
-  AtSign,
-  Calendar,
-  MapPin,
-  Plus,
-  Settings2,
-  User,
   UserRoundPlus,
-  X,
 } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { InviteGuestDialog } from "../../app/components/Dialog/InviteGuestDialog";
 import { ConfirmTripDialog } from "../../app/components/Dialog/ConfirmTripDialog";
+import { DestionAndDateStep } from "../../app/components/step/destion-and-date-step";
+import { InviteGueststep } from "../../app/components/step/inviteGuest-step";
 
 export function CreateApp() {
   const [isGuestInputOpen, setIsGuestInputOpen] = useState(false);
@@ -38,7 +33,8 @@ export function CreateApp() {
     setIsGuestModalOpen(false);
   }
 
-  function createTrip() {
+  function createTrip(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     navigate("/trip/134");
   }
 
@@ -76,70 +72,16 @@ export function CreateApp() {
           </p>
         </div>
         <div className="space-y-4">
-          <div className="h-16 bg-zinc-900 px-4 rounded-xl flex  items-center shadow-shape gap-3">
-            <div className="flex items-center gap-2 flex-1">
-              <MapPin className="size-5 text-zinc-400" />
-              <input
-                type="text"
-                className="bg-transparent text-lg flex-1 placeholder-zinc-400 outline-none"
-                placeholder="Para aonde você vai?"
-                disabled={isGuestInputOpen}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <Calendar className="size-5 text-zinc-400" />
-              <input
-                type="text"
-                className="bg-transparent text-lg placeholder-zinc-400 w-40 outline-none"
-                placeholder="Quando"
-                disabled={isGuestInputOpen}
-              />
-            </div>
-            <div className="w-px h-6 text-zinc-800" />
-            {isGuestInputOpen ? (
-              <button
-                onClick={closeGuestInput}
-                className="py-2 px-5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-lg font-medium flex items-center gap-2"
-              >
-                Alterar local/data
-                <Settings2 className="size-5" />
-              </button>
-            ) : (
-              <button
-                onClick={openGuestInput}
-                className="py-2 px-5 bg-lime-300 hover:bg-lime-400 text-lime-950 rounded-lg font-medium flex items-center gap-2"
-              >
-                Continuar
-                <ArrowRight className="size-5" />
-              </button>
-            )}
-          </div>
+          <DestionAndDateStep
+            closeGuestInput={closeGuestInput}
+            openGuestInput={openGuestInput}
+            isGuestInputOpen={isGuestInputOpen}
+          />
+
           {isGuestInputOpen && (
-            <div className="h-16 bg-zinc-900 px-4 rounded-xl flex  items-center shadow-shape gap-3">
-              <button
-                onClick={openGuestModal}
-                className="flex items-center gap-2 flex-1 text-left cursor-pointer"
-              >
-                <UserRoundPlus className="size-5 text-zinc-400" />
-                {emailInvite.length > 0 ? (
-                  <span className="bg-transparent text-lg flex-1 text-zinc-100 outline-none">
-                    {emailInvite.length} pessoa(s) convidada(s)
-                  </span>
-                ) : (
-                  <span className="bg-transparent text-lg flex-1 outline-none">
-                    Quem estará na viagem?
-                  </span>
-                )}
-              </button>
-              <div className="w-px h-6 text-zinc-800" />
-              <button
-                onClick={openConfirmTripDialog}
-                className="py-2 px-5 bg-lime-300 hover:bg-lime-400 text-lime-950 rounded-lg font-medium flex items-center gap-2"
-              >
-                Confirmar viagem
-                <ArrowRight className="size-5" />
-              </button>
-            </div>
+            <InviteGueststep emailInvite={emailInvite}
+              openConfirmTripDialog={openConfirmTripDialog}
+              openGuestModal={openGuestModal} />
           )}
         </div>
         <p className="text-zinc-500 text-sm">
@@ -156,21 +98,25 @@ export function CreateApp() {
           .
         </p>
       </div>
-      {isGuestModalOpen && (
-        <InviteGuestDialog
-          closeGuestDialog={closeGuestDialog}
-          emailInvite={emailInvite}
-          onSubmit={onSubmit}
-          removeInvite={removeInvite}
-        />
-      )}
+      {
+        isGuestModalOpen && (
+          <InviteGuestDialog
+            closeGuestDialog={closeGuestDialog}
+            emailInvite={emailInvite}
+            onSubmit={onSubmit}
+            removeInvite={removeInvite}
+          />
+        )
+      }
 
-      {isConfirmTripOpen && (
-        <ConfirmTripDialog
-          closeConfirmTripDialog={closeConfirmTripDialog}
-          createTrip={createTrip}
-        />
-      )}
-    </main>
+      {
+        isConfirmTripOpen && (
+          <ConfirmTripDialog
+            closeConfirmTripDialog={closeConfirmTripDialog}
+            createTrip={createTrip}
+          />
+        )
+      }
+    </main >
   );
 }

@@ -1,10 +1,10 @@
-import React from "react";
+import { FormEvent } from "react";
 import { Dialog } from "..";
 import { AtSign, User, X } from "lucide-react";
 
 type ConfirmTripDialogProps = {
   closeConfirmTripDialog: () => void;
-  createTrip: () => void;
+  createTrip: (event: FormEvent<HTMLFormElement>) => void;
 };
 
 export function ConfirmTripDialog({
@@ -33,7 +33,7 @@ export function ConfirmTripDialog({
         </p>
       </div>
       <div className="flex flex-wrap gap-2"></div>
-      <form className="space-y-3">
+      <form onSubmit={createTrip} className="space-y-3">
         <div className="px-2 flex items-center flex-1 gap-2 h-14 bg-zinc-950 border border-zinc-800 rounded-lg">
           <User className="size-5 text-zinc-400" />
           <input
@@ -52,7 +52,6 @@ export function ConfirmTripDialog({
           />
         </div>
         <button
-          onClick={createTrip}
           className="h-11 px-5 w-full justify-center bg-lime-300 hover:bg-lime-400 text-lime-950 rounded-lg font-medium flex items-center gap-2"
         >
           Confirmar criação da viagem
