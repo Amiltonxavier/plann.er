@@ -1,13 +1,11 @@
-import {
-  ArrowRight,
-  UserRoundPlus,
-} from "lucide-react";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { InviteGuestDialog } from "../../app/components/Dialog/InviteGuestDialog";
 import { ConfirmTripDialog } from "../../app/components/Dialog/ConfirmTripDialog";
 import { DestionAndDateStep } from "../../app/components/step/destion-and-date-step";
 import { InviteGueststep } from "../../app/components/step/inviteGuest-step";
+import { DateRange } from "react-day-picker";
+import { api } from "../../lib";
 
 export function CreateApp() {
   const [isGuestInputOpen, setIsGuestInputOpen] = useState(false);
@@ -17,6 +15,13 @@ export function CreateApp() {
     "xavierdev23@gmail.com",
     "amilton.jose@etic.co.ao",
   ]);
+
+  const [ownEmail, setOwnEmail] = useState('')
+  const [ownName, setOwnName] = useState('')
+  const [destination, setDestination] = useState('')
+  const [eventStartAndEndDates, setEventStartAndEndDates] = useState<DateRange | undefined>()
+
+
   const navigate = useNavigate();
   const [isConfirmTripOpen, setIsConfirmTripOpen] = useState(false);
 
@@ -33,9 +38,31 @@ export function CreateApp() {
     setIsGuestModalOpen(false);
   }
 
-  function createTrip(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    navigate("/trip/134");
+  async function createTrip(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (
+      !destination ||
+      !ownEmail ||
+      !ownName ||
+      emailInvite.length <= 0
+    ) return
+
+    if (!eventStartAndEndDates?.from || !eventStartAndEndDates.to) return
+
+
+      const response = await api.post('trips', {
+        destination,
+        starts_at: eventStartAndEndDates.from,
+        ends_at: eventStartAndEndDates.to,
+        emails_to_invite: emailInvite,
+        owner_name: ownName,
+        owner_email: ownEmail
+      })
+
+    const { tripId } = response.data
+
+    navigate(`/trip/${tripId}`);
   }
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -76,12 +103,18 @@ export function CreateApp() {
             closeGuestInput={closeGuestInput}
             openGuestInput={openGuestInput}
             isGuestInputOpen={isGuestInputOpen}
+            setDestination={setDestination}
+            setEventStartAndEndDates={setEventStartAndEndDates}
+            eventStartAndEndDates={eventStartAndEndDates}
           />
 
           {isGuestInputOpen && (
-            <InviteGueststep emailInvite={emailInvite}
+            <InviteGueststep
+              emailInvite={emailInvite}
               openConfirmTripDialog={openConfirmTripDialog}
-              openGuestModal={openGuestModal} />
+              openGuestModal={openGuestModal}
+
+            />
           )}
         </div>
         <p className="text-zinc-500 text-sm">
@@ -114,6 +147,8 @@ export function CreateApp() {
           <ConfirmTripDialog
             closeConfirmTripDialog={closeConfirmTripDialog}
             createTrip={createTrip}
+            setOwnName={setOwnName}
+            setOwnEmail={setOwnEmail}
           />
         )
       }

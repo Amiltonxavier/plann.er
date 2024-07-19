@@ -5,11 +5,15 @@ import { AtSign, User, X } from "lucide-react";
 type ConfirmTripDialogProps = {
   closeConfirmTripDialog: () => void;
   createTrip: (event: FormEvent<HTMLFormElement>) => void;
+  setOwnName: (name: string) => void
+  setOwnEmail: (email: string) => void
 };
 
 export function ConfirmTripDialog({
   closeConfirmTripDialog,
   createTrip,
+  setOwnName,
+  setOwnEmail
 }: ConfirmTripDialogProps) {
   return (
     <Dialog>
@@ -40,6 +44,7 @@ export function ConfirmTripDialog({
             name="name"
             className="bg-transparent text-lg placeholder-zinc-400 outline-none w-full"
             placeholder="Digite o e-mail do convidado"
+            onChange={e => setOwnName(e.target.value)}
           />
         </div>
         <div className="px-2 flex items-center flex-1 gap-2 h-14 bg-zinc-950 border border-zinc-800 rounded-lg">
@@ -49,6 +54,7 @@ export function ConfirmTripDialog({
             type="email"
             className="bg-transparent text-lg placeholder-zinc-400 outline-none w-full"
             placeholder="Digite o e-mail do convidado"
+            onChange={e => setOwnEmail(e.target.value)}
           />
         </div>
         <button
