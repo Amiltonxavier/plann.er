@@ -8,6 +8,7 @@ import { DestinationAndDateHeader } from "../../app/components/DestinationAndDat
 import { Button } from "../../components/button";
 import { useParams } from "react-router-dom";
 import { api } from "../../lib";
+import { format } from "date-fns";
 
 type TripProps = {
   id: string,
@@ -27,6 +28,7 @@ export function TripDetailPage() {
     const response = await api.get(`/trips/${tripId}`)
     setTrip(response.data.trip);
   }
+  
   function openCreateActivityModalOpen() {
     setIsCreateActivityModalOpen(true)
   }
@@ -39,9 +41,12 @@ export function TripDetailPage() {
     getTrip();
   }, [])
 
+  const displayDate = trip ? format(trip.starts_at, "d' de 'LLL").concat(' até ').concat(format(trip.ends_at, "d' de 'LLL")) : null
+
+
   return (
     <div className="max-w-6xl px-6 py-10 mx-auto space-y-8">
-      <DestinationAndDateHeader destination={trip?.destination} />
+      <DestinationAndDateHeader destination={trip?.destination} date={displayDate} />
       <main className="flex gap-16 px-4">
         <div className="flex-1 space-y-6">
           <div className="flex justify-between items-center">

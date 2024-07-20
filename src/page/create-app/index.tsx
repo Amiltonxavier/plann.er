@@ -16,11 +16,13 @@ export function CreateApp() {
     "amilton.jose@etic.co.ao",
   ]);
 
-  const [ownEmail, setOwnEmail] = useState('')
-  const [ownName, setOwnName] = useState('')
-  const [destination, setDestination] = useState('')
-  const [eventStartAndEndDates, setEventStartAndEndDates] = useState<DateRange | undefined>()
-
+  const [ownEmail, setOwnEmail] = useState("");
+  const [ownName, setOwnName] = useState("");
+  const [destination, setDestination] = useState("");
+  const [eventStartAndEndDates, setEventStartAndEndDates] = useState<
+    DateRange | undefined
+  >();
+  
 
   const navigate = useNavigate();
   const [isConfirmTripOpen, setIsConfirmTripOpen] = useState(false);
@@ -41,29 +43,26 @@ export function CreateApp() {
   async function createTrip(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (
-      !destination ||
-      !ownEmail ||
-      !ownName ||
-      emailInvite.length <= 0
-    ) return
+    if (!destination || !ownEmail || !ownName || emailInvite.length <= 0)
+      return;
 
-    if (!eventStartAndEndDates?.from || !eventStartAndEndDates.to) return
+    if (!eventStartAndEndDates?.from || !eventStartAndEndDates.to) return;
 
+    const response = await api.post("trips", {
+      destination,
+      starts_at: eventStartAndEndDates.from,
+      ends_at: eventStartAndEndDates.to,
+      emails_to_invite: emailInvite,
+      owner_name: ownName,
+      owner_email: ownEmail,
+    });
 
-      const response = await api.post('trips', {
-        destination,
-        starts_at: eventStartAndEndDates.from,
-        ends_at: eventStartAndEndDates.to,
-        emails_to_invite: emailInvite,
-        owner_name: ownName,
-        owner_email: ownEmail
-      })
-
-    const { tripId } = response.data
+    const { tripId } = response.data;
 
     navigate(`/trip/${tripId}`);
   }
+
+
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -113,7 +112,6 @@ export function CreateApp() {
               emailInvite={emailInvite}
               openConfirmTripDialog={openConfirmTripDialog}
               openGuestModal={openGuestModal}
-
             />
           )}
         </div>
@@ -131,27 +129,23 @@ export function CreateApp() {
           .
         </p>
       </div>
-      {
-        isGuestModalOpen && (
-          <InviteGuestDialog
-            closeGuestDialog={closeGuestDialog}
-            emailInvite={emailInvite}
-            onSubmit={onSubmit}
-            removeInvite={removeInvite}
-          />
-        )
-      }
+      {isGuestModalOpen && (
+        <InviteGuestDialog
+          closeGuestDialog={closeGuestDialog}
+          emailInvite={emailInvite}
+          onSubmit={onSubmit}
+          removeInvite={removeInvite}
+        />
+      )}
 
-      {
-        isConfirmTripOpen && (
-          <ConfirmTripDialog
-            closeConfirmTripDialog={closeConfirmTripDialog}
-            createTrip={createTrip}
-            setOwnName={setOwnName}
-            setOwnEmail={setOwnEmail}
-          />
-        )
-      }
-    </main >
+      {isConfirmTripOpen && (
+        <ConfirmTripDialog
+          closeConfirmTripDialog={closeConfirmTripDialog}
+          createTrip={createTrip}
+          setOwnName={setOwnName}
+          setOwnEmail={setOwnEmail}
+        />
+      )}
+    </main>
   );
 }

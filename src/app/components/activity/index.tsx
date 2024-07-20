@@ -1,36 +1,67 @@
-import { CircleCheck } from 'lucide-react'
+import { CircleCheck } from "lucide-react";
+import { api } from "../../../lib";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { format } from "date-fns";
+import { pt } from "date-fns/locale";
 
+type ActivityProps = {
+  date: string;
+  activities: {
+    id: string;
+    occurs_at: string;
+    title: string;
+  }[];
+};
 export function Activity() {
-    return (
-        <div className="space-y-8">
-            <div className="space-y-2.5">
-                <div className="flex gap-2 items-baseline">
-                    <span className="text-zinc-300 text-xl font-semibold">Dia 15</span>
-                    <span className="text-xl text-zinc-500">Segunda-Feira</span>
-                </div>
-                <p className="text-zinc-500 text-sm">Nenhuma atividade cadastrada nessa data</p>
-            </div>
+  const { tripId } = useParams();
 
-            <div className="space-y-2.5">
-                <div className="flex gap-2 items-baseline">
-                    <span className="text-zinc-300 text-xl font-semibold">Dia 20</span>
-                    <span className="text-xl text-zinc-500">Terça-Feira</span>
-                </div>
-                <div className="space-2.5">
+  const [activities, setActivities] = useState<ActivityProps[]>([]);
+
+  async function getActivities() {
+    const response = await api.get(`/trips/${tripId}/activities`);
+    setActivities(response.data.activities);
+  }
+
+  useEffect(() => {
+    getActivities();
+  }, []);
+
+  return (
+    <div className="space-y-8">
+      {activities.map((category) => (
+        <div className="space-y-2.5">
+          <div className="flex gap-2 items-baseline">
+            <span className="text-zinc-300 text-xl font-semibold">
+              Dia {format(category.date, "d")}
+            </span>
+            <span className="text-xl text-zinc-500">
+              {format(category.date, "EEE", { locale: pt })}
+            </span>
+          </div>
+          {category.activities.length > 0 ? (
+            <div>
+              {category.activities.map((activity) => {
+                return (
+                  <div className="space-2.5">
                     <div className="px-4 py-2.5 bg-zinc-900 rounded-xl shadow-shape flex items-center gap-3">
-                        <CircleCheck className="size-5 text-lime-300" />
-                        <span className="text-zinc-100">Academia em grupo</span>
-                        <span className="text-zinc-400 text-sm ml-auto">08:00h</span>
+                      <CircleCheck className="size-5 text-lime-300" />
+                      <span className="text-zinc-100">{activity.title}</span>
+                      <span className="text-zinc-400 text-sm ml-auto">
+                        {format(activity.occurs_at, "HH:mm")}h
+                      </span>
                     </div>
-                </div>
-                <div className="space-2.5">
-                    <div className="px-4 py-2.5 bg-zinc-900 rounded-xl shadow-shape flex items-center gap-3">
-                        <CircleCheck className="size-5 text-lime-300" />
-                        <span className="text-zinc-100">Gaming session</span>
-                        <span className="text-zinc-400 text-sm ml-auto">08:00h</span>
-                    </div>
-                </div>
+                  </div>
+                );
+              })}
             </div>
+          ) : (
+            <p className="text-zinc-500 text-sm">
+              Nenhuma atividade cadastrada nessa data
+            </p>
+          )}
         </div>
-    )
+      ))}
+    </div>
+  );
 }
