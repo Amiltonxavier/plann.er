@@ -1,30 +1,83 @@
-# React + TypeScript + Vite
+# Plann.er
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Um aplicação web para criar planos de viagem para trabalho ou férias com amigos, registrando atividades, adicionando links importantes e convidando novos participantes. Este projeto foi desenvolvido durante o evento NLW da Rocketseat na trilha de React.
 
-Currently, two official plugins are available:
+## Captura de tela
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+ - Cria de uma viagem 
+![Tela inicial](./public/1.png)
+ - Adicionar convidado
+![Segunda Tela](./public/4.png)
+ - Detalhes da Viagem 
+![Segunda Tela](./public/3.png)
 
-## Expanding the ESLint configuration
+## Funcionalidades
+- **Criação de Planos de Viagem:**
+  - Adicione datas, títulos e descrições para suas viagens.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Registro de Atividades:**
+  - Programe atividades diárias, incluindo descrições, horários e locais.
 
-- Configure the top-level `parserOptions` property like this:
+- **Adição de Links Importantes:**
+  - Armazene links relevantes como reservas de hotéis, passagens de avião, mapas, etc.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- **Convite de Participantes:**
+  - Convide amigos ou colegas para colaborar no planejamento da viagem.
+
+## Tecnologias Utilizadas
+
+- [React](https://reactjs.org/)
+- [React Router](https://reactrouter.com/)
+- [Axios](https://axios-http.com/)
+- [Vite](https://vitejs.dev/)
+- [Tailwind](https://tailwindcss.com/)
+- [DayPicker](https://daypicker.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+
+## Requisitos
+
+- Node.js >= 14.x
+- npm >= 6.x ou yarn >= 1.22.x
+
+## Instalação
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/Amiltonxavier/plann.er.git
+cd plann.er
+npm install
+# ou
+yarn install
+```
+## Uso
+
+Para iniciar o servidor de desenvolvimento:
+
+```
+npm start
+# ou
+yarn start
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Abra ```http://localhost:5173``` para ver o projeto no seu navegador.
+
+## Contribuição
+Se você quiser contribuir com o projeto, siga estas etapas:
+
+ - Fork o repositório
+ - Crie uma branch para sua feature (git checkout -b feature/nome-da-feature)
+ - Commit suas mudanças (git commit -am 'Adiciona uma nova feature')
+ - Faça push para a branch (git push origin feature/nome-da-feature)
+ - Crie um novo Pull Request
+
+## Licença
+
+Este projeto está licenciado sob a Nome da Licença.
+
+Contato
+Amilton Xavier - @Amiltonxavier - amilltonxavier1999@gmail.com
+
+Link do Projeto: https://github.com/Amiltonxavier/plann.er.git
+
+```Você pode personalizar esse template conforme as necessidades do seu projeto.```
