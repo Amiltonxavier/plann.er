@@ -9,8 +9,8 @@ type DialogProps = {
 
 export function Dialog({ children, closeDialog, title }: DialogProps) {
   return (
-    <div className="fixed inset-0 backdrop-blur-sm bg-black/60 flex justify-center items-center">
-      <div className=" w-[640px] bg-zinc-900 py-5 px-6 rounded-xl shadow-shape space-y-5 ">
+    <div className=" fixed inset-0 backdrop-blur-sm bg-black/60 flex justify-center items-center">
+      <div className="w-[640px] animate-slide-down bg-zinc-900 py-5 px-6 rounded-xl shadow-shape space-y-5 ">
         {children}
       </div>
     </div>

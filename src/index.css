@@ -9,3 +9,21 @@
 .blur-background {
   filter: blur(5px); /* ajuste o valor do blur conforme necessário */
 }
+
+
+@layer utilities {
+  @keyframes slide-down {
+    from {
+      transform: translateY(-50%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slide-down {
+    animation: slide-down 0.5s ease-out forwards;
+  }
+}
